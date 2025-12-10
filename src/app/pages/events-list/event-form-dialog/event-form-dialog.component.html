@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Neue Veranstaltung</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Datum</mat-label>
+      <input matInput type="date" formControlName="datum" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Ort</mat-label>
+      <input matInput formControlName="ort" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="geplant">Geplant</mat-option>
+        <mat-option value="abgesagt">Abgesagt</mat-option>
+        <mat-option value="erledigt">Erledigt</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close()">Abbrechen</button>
+  <button mat-button [disabled]="form.invalid" (click)="submit()">Speichern</button>
+</mat-dialog-actions>

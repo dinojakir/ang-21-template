@@ -1,2 +1,109 @@
-<div>Events</div>
+<div class="toolbar">
+  <button mat-button (click)="openAddDialog()">+</button>
+  <input matInput placeholder="Search" [(ngModel)]="search" />
+  <mat-select [(value)]="filterStatus" placeholder="Status filtern">
+    <mat-option value="">All</mat-option>
+    <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+  </mat-select>
+  <input matInput type="date" placeholder="From" [(ngModel)]="filterFrom" />
+  <input matInput type="date" placeholder="To" [(ngModel)]="filterTo" />
+  <mat-select [(value)]="groupBy" placeholder="Group by">
+    <mat-option value="">Empty</mat-option>
+    <mat-option value="status">Status</mat-option>
+    <mat-option value="place">Place</mat-option>
+  </mat-select>
+  <button mat-button (click)="exportToCsv()">Export to CSV</button>
+</div>
 
+<table aria-label="Events list">
+  <thead>
+    <tr>
+      <th (click)="sort('date')">
+        Date
+        <span [class.asc]="sortField() === 'date' && sortDir() === 'asc'">↑</span>
+        <span [class.desc]="sortField() === 'date' && sortDir() === 'desc'">↓</span>
+      </th>
+      <th (click)="sort('place')">Place</th>
+      <th>Status</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @if (groupBy()) { @for (group of groupedEvents(); track group.key) {
+
+    <tr class="group-header">
+      <td colspan="4">{{ group.key }} (Summe Teilnehmer: {{ group.sum }})</td>
+    </tr>
+
+    @for (event of group.events; track event.id) {
+
+    <tr (click)="toggleDetail(event.id)" [class.expanded]="expandedEvent() === event.id">
+      <td>{{ event.date | germanDate }}</td>
+
+      <td
+        contenteditable
+        #cella
+        [innerText]="event.place"
+        (click)="$event.stopPropagation()"
+        (blur)="updateEvent(event.id, { place: cella.innerText })"
+      ></td>
+
+      <td>
+        <select
+          [(ngModel)]="event.status"
+          (click)="$event.stopPropagation()"
+          (change)="updateEvent(event.id, { status: event.status })"
+        >
+          <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+        </select>
+      </td>
+
+      <td>{{ event.participants.length }}</td>
+    </tr>
+
+    @if (expandedEvent() === event.id) {
+    <tr class="detail-row">
+      <td colspan="4">
+        <app-event-detail [eventId]="event.id"></app-event-detail>
+      </td>
+    </tr>
+    } } } } @else { @for (event of events(); track event.id) {
+
+    <tr (click)="toggleDetail(event.id)" [class.expanded]="expandedEvent() === event.id">
+      <td>{{ event.date | germanDate }}</td>
+
+      <td
+        contenteditable
+        #cellb
+        [innerText]="event.place"
+        (click)="$event.stopPropagation()"
+        (blur)="updateEvent(event.id, { place: cellb.innerText })"
+      ></td>
+
+      <td>
+        <select
+          [(ngModel)]="event.status"
+          (click)="$event.stopPropagation()"
+          (change)="updateEvent(event.id, { status: event.status })"
+        >
+          <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+        </select>
+      </td>
+
+      <td>{{ event.participants.length }}</td>
+    </tr>
+
+    @if (expandedEvent() === event.id) {
+    <tr class="detail-row">
+      <td colspan="4">
+        <app-event-detail [eventId]="event.id"></app-event-detail>
+      </td>
+    </tr>
+    } } }
+  </tbody>
+</table>
+
+<button (click)="prevPage()" [disabled]="page() === 1" aria-label="Previous">Previous</button>
+<span>Page {{ page() }} of {{ totalPages() }}</span>
+<button (click)="nextPage()" [disabled]="page() === totalPages()" aria-label="Next">Next</button>

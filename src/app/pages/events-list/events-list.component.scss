@@ -1,0 +1,301 @@
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  button,
+  input,
+  mat-select,
+  mat-form-field {
+    margin: 0 !important; // Material manchmal nervig mit eigenen Margins
+  }
+
+  button[mat-button] {
+    min-width: 44px;
+    height: 44px;
+    padding: 0 16px;
+    font-size: 1.2rem;
+    background-color: #1976d2;
+    color: white;
+
+    &:hover {
+      background-color: #1565c0;
+    }
+  }
+
+  input,
+  mat-form-field {
+    flex: 1 1 180px;        // wächst, aber nicht unter 180px
+    max-width: 240px;
+  }
+
+  mat-select {
+    flex: 1 1 160px;
+    max-width: 200px;
+  }
+
+  // Export-Button etwas hervorheben
+  button:last-child {
+    margin-left: auto;
+    background-color: #4caf50;
+    &:hover {
+      background-color: #43a047;
+    }
+  }
+}
+
+// Responsives Verhalten auf kleinen Bildschirmen
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+
+    input,
+    mat-form-field,
+    mat-select,
+    button {
+      width: 100%;
+      max-width: none;
+    }
+
+    button:last-child {
+      margin-left: 0;
+    }
+  }
+}
+
+// =============== TABLE STYLES ===============
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 0.95rem;
+}
+
+thead {
+  background: #1976d2;
+  color: white;
+  text-align: left;
+
+  th {
+    padding: 14px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    // Sortierpfeile
+    span {
+      margin-left: 6px;
+      font-size: 0.8em;
+      opacity: 0.6;
+
+      &.asc,
+      &.desc {
+        opacity: 1;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+tbody {
+  tr {
+    border-bottom: 1px solid #e0e0e0;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #f8fbff;
+      box-shadow: 0 2px 6px rgba(25, 118, 210, 0.1);
+    }
+
+    &.expanded {
+      background: #e3f2fd;
+      font-weight: 500;
+    }
+
+    // Gruppierungs-Zeile
+    &.group-header {
+      background: #e8eaf6;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #1a237e;
+
+      td {
+        padding: 14px 16px;
+      }
+    }
+  }
+
+  td {
+    padding: 14px 16px;
+    vertical-align: middle;
+
+    // Inline-Edit: Ort
+    &[contenteditable="true"] {
+      outline: 2px solid #1976d2;
+      border-radius: 4px;
+      padding: 4px 8px;
+      min-width: 100px;
+
+      &:focus {
+        background: #e3f2fd;
+      }
+    }
+
+    select {
+      padding: 6px 10px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      background: white;
+      min-width: 120px;
+    }
+  }
+}
+
+// =============== DETAIL ROW (Teilnehmer) ===============
+.detail-row {
+  td {
+    padding: 0;
+    background: #f5f9ff;
+  }
+
+  app-event-detail {
+    display: block;
+    padding: 20px;
+    background: #ffffff;
+    border-top: 3px solid #1976d2;
+    border-radius: 0 0 8px 8px;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
+
+    table {
+      box-shadow: none;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    // Teilnehmertabelle
+    table thead {
+      background: #3949ab;
+    }
+
+    // Add-Form am Ende
+    > div {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+
+      input,
+      select {
+        padding: 10px;
+        border: 1px solid #999;
+        border-radius: 6px;
+        flex: 1 1 180px;
+      }
+
+      button {
+        background: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+
+        &:hover {
+          background: #43a047;
+        }
+      }
+    }
+  }
+}
+
+// =============== PAGINATION ===============
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 24px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+  button {
+    background: #1976d2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    min-width: 120px;
+    font-weight: 600;
+    transition: all 0.2s;
+
+    &:hover:not(:disabled) {
+      background: #1565c0;
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      background: #bbb;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  span {
+    font-weight: 600;
+    color: #333;
+    min-width: 140px;
+    text-align: center;
+  }
+}
+
+// =============== RESPONSIVE ===============
+@media (max-width: 768px) {
+  table {
+    font-size: 0.9rem;
+  }
+
+  thead {
+    th,
+    td {
+      padding: 10px 8px;
+    }
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 12px;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// Accessibility: Fokus-Stile
+button:focus-visible,
+select:focus-visible,
+[contenteditable]:focus {
+  outline: 3px solid #ffeb3b;
+  outline-offset: 2px;
+}
